@@ -1,4 +1,4 @@
-create_product.php
+create_medicine.php
 <?php
  
 /*
