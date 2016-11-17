@@ -9,8 +9,11 @@ $patID = $_GET['patid'];
 //Importing database
 require_once('db_config.php');
 
-//Creating sql query with where clause to get info
-$sql = "SELECT * FROM patientinfo WHERE patID = $patid';
+//Creating sql query with where clause to get info - hard-coded
+$sql = "SELECT * FROM patientinfo WHERE patID = 113649";
+
+//Creating sql query with where clause to get info - user input
+//$sql = "SELECT * FROM patientinfo WHERE patID = $patid';
 
 //getting result
 $r = mysqli_query($con,$sql);
