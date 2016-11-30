@@ -1,6 +1,5 @@
 <?php
-
-// $patid = $_GET['patid'];
+//$patid = $_GET['patid'];
 $patid = '113649';
 
 $response = array();
@@ -8,7 +7,7 @@ $response = array();
 //connect to db
 require_once('db_config.php');
 
-$sql = "SELECT * FROM prescription WHERE patid = '$patid'";
+$sql = "SELECT * FROM visithistory v, prescription p WHERE v.patid = '113649' and v.rxid = p.rxid";
 
 $result = $con -> query($sql);
 
@@ -16,8 +15,8 @@ $result = $con -> query($sql);
     if($result -> num_rows > 0){
         $row = $result -> fetch_assoc();
         $response["success"] = 1;
-        $response["prescription"] = array();
-        array_push($response["prescription"], $row);
+        $response["visithistory_rx"] = array();
+        array_push($response["visithistory_rx"], $row);
         echo json_encode($response);
         }
   //Write unsuccessful
@@ -27,4 +26,4 @@ $result = $con -> query($sql);
         echo json_encoder($response);
       }
   $con -> close();
-  ?>
+?>

@@ -16,11 +16,10 @@ $result = $con->query($sql);
 		
 		// While the current row is populated, nest it in $response
 		// Will stop once all rows have been operated upon
+                $response["success"] = 1;
 		while ($row = $result->fetch_assoc()) {
-			$response[] = $row;
+			$response["druginfo"][] = $row;
 		}
-
-		$response["success"] = 1;
 		echo json_encode($response);
 	} else {
 		// No rows returned
