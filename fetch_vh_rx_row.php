@@ -7,7 +7,7 @@ $response = array();
 //connect to db
 require_once('db_config.php');
 
-$sql = "SELECT * FROM visithistory v, prescription p WHERE v.patid = '113649' and v.rxid = p.rxid";
+$sql = "SELECT * FROM visithistory v, prescription p WHERE v.patid = '$patid' and v.rxid = p.rxid";
 
 $result = $con -> query($sql);
 

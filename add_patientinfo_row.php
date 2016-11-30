@@ -2,34 +2,39 @@
 
 if($_SERVER['REQUEST_METHOD']=='POST') {
 
-	$patname = $_POST['patname'];
-	$patid = $_POST['patid'];
-	$address = $_POST['address'];
-  	$telephone = $_POST['telephone'];
-  	$gender = $_POST['gender'];
-  	$marstat = $_POST['marstat'];
-  	$dob = $_POST['dob'];
-  	$children = $_POST['children'];
-  	$height = $_POST['height'];
-  	$weight = $_POST['weight'];
-  	$allergies = $_POST['allergies'];
-  	$medcond = $_POST['medcond'];
+	//$patname = $_POST['patname'];
+	$patname = 'newpat4';
+	//$patid = $_POST['patid'];
+	$patid = 'patid4'; 
+	//$address = $_POST['address'];
+	$address = '641 Conny Road';
+  	//$telephone = $_POST['telephone'];
+	$telephone = '7727139924';
+  	//$gender = $_POST['gender'];
+	$gender = 'M';
+  	//$marstat = $_POST['marstat'];
+	$marstat = 'Single';
+  	//$dob = $_POST['dob'];
+	$dob = '1999-12-13';
+  	//$children = $_POST['children'];
+	$children = '3';
+  	//$height = $_POST['height'];
+	$height = '5';
+  	//$weight = $_POST['weight'];
+	$weight = '6';
+  	//$allergies = $_POST['allergies'];
+	$allergies = 'nope';
+  	//$medcond = $_POST['medcond'];
+	$medcond = 'ill';
+
   	$reponse = array();
 
 	// connect to db
 	require_once('db_config.php');
 
-	// Perform sql statement - Hard Coded
-	$sql = "INSERT INTO patientinfo (patname,patid,address,telephone,gender,
-  marstat,dob,children,height,weight,allergies,medcond) VALUES('TestPat1','patid1',
-  '633 Beachomber Lane','7726962517','M','S','1995-03-02','2','100','50','none',
-  'sick')";
-
-	// Perform sql statement - User input
-  	//$sql = "INSERT INTO patientinfo (patname,patid,address,telephone,gender,
-  	//marstat,dob,children,height,weight,allergies,medcond) VALUES('$patname','$patid',
-  		//'$address','$telephone','$gender','$marstat','$dob','$children','$height','$weight','$allergies',
-  	//'$medcond')";
+  	$sql = "INSERT INTO patientinfo (patname,patid,address,telephone,gender,
+marstat,dob,children,height,weight,allergies,medcond) VALUES('$patname','$patid','$address','$telephone','$gender','$marstat','$dob','$children'
+,'$height','$weight','$allergies','$medcond')";
 
 	// Write successful
 	if ($con->query($sql) === TRUE) {

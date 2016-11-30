@@ -1,19 +1,19 @@
 <?php
 if($_SERVER['REQUEST_METHOD']=='POST') {
 
-	$drugid = $_POST['drugid'];
-	$drugname = $_POST['drugname'];
-	$drugtotal = $_POST['drugtotal'];
+	//$drugid = $_POST['drugid'];
+	$drugid = '123123';
+	//$drugname = $_POST['drugname'];
+	$drugname = 'fakedrug';
+	//$drugtotal = $_POST['drugtotal'];
+	$drugtotal = '500';
+	
 	$reponse = array();
 
 	// connect to db
 	require_once('db_config.php');
 
-	// Perform sql statement - Hard Coded
-	$sql = "INSERT INTO druginfo (drugid,drugname,drugtotal) VALUES('11139','Fscytre','633')";
-	
-	// Perform sql statement - User input
-	//$sql = "INSERT INTO druginfo (drugid,drugname,drugtotal) VALUES('$drugid','$drugname','$drugtotal')";
+	$sql = "INSERT INTO druginfo (drugid,drugname,drugtotal) VALUES('$drugid','$drugname','$drugtotal')";
 
 	// Write successful
 	if ($con->query($sql) === TRUE) {
