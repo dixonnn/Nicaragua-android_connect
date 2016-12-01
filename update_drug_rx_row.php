@@ -3,7 +3,7 @@
 if($_SERVER['REQUEST_METHOD']=='POST') {
 
 	//$rxid = $_POST['rxid'];
-	$rxid = '4';
+	$rxid = '7';
 	//$drugid = $_POST['drugid'];
 	$drugid = '000001';
 	//$transdate = $_POST['transdate'];
@@ -27,61 +27,37 @@ if($_SERVER['REQUEST_METHOD']=='POST') {
 	require_once('db_config.php');
 
 	// Get current quantity of prescribed drug from inventory
-	$sql1 = "SELECT drugtotal FROM druginfo WHERE drugid='$drugid'";
-	$result1 = $con->query($sql1);
+	$sql1 = "UPDATE druginfo SET drugtotal=drugtotal-$quantity WHERE drugid='$drugid'";
 
-	// If properly fetched...
-	if ($result1->num_rows > 0) {
-		// Assign value to $old_val, return confirmation
-		$row1 = $result1->fetch_assoc();
-		$old_val = $row1['drugtotal'];
+	// If updating drugtotal successful
+	if ($con->query($sql1) === TRUE) {
+		$response["update_success"] = 1;
+		$response["update_message"] = "Record updated Successfully";
 
-		$response["fetch_success"] = 1;
-		$response["fetch_message"] = "Old Total Fetched: " . $old_val;
+		// Create New Prescription entry
+		$sql2 = "INSERT INTO prescription(rxid,drugid,transdate,quantity,patid,directions,duration,doctor,symptoms) VALUES('$rxid','$drugid','$transdate','$quantity','$patid','$directions','$duration',
+'$doctor','$symptoms')";
 
-	// If could not fetch...
+		// Prescription creation successful
+		if ($con->query($sql2) === TRUE) {
+			$response["newrx_success"] = 1;				$response["newrx_message"] = "Prescription created successfully.";
+			echo json_encode($response);
+
+		// Prescription not created	
+		} else {
+			$response["newrx_success"] = 0;
+			$response["newrx_message"] = "Prescription could not be created.";
+			echo json_encode($response);
+		}
+
+	// Updating new drugtotal was not successful
 	} else {
-		$response["fetch_success"] = 0;
-		$response["fetch_message"] = "Old drugtotal could not be fetched.";
+		$response["update_success"] = 0;
+		$response["update_message"] = "Total not fetched.";
 		echo json_encode($response);
 	}
 
-	// So long as the old total has been fetched.
-	if (isset ($old_val)) {
-		$new_val = $old_val - $quantity;
-		$sql2 = "UPDATE druginfo SET drugtotal='$new_val' WHERE 		drugid='$drugid'";
-		
-		// Update Successful
-		if ($con->query($sql2) === TRUE) {
-			$response["update_success"] = 1;
-			$response["update_message"] = "Record updated Successfully";
 
-			// Create New Prescription entry
-			$sql3 = "INSERT INTO prescription(rxid,drugid,transdate,quantity,patid,directions,duration,doctor,symptoms) VALUES('$rxid','$drugid','$transdate','$quantity','$patid','$directions','$duration',
-'$doctor','$symptoms')";
-
-			// Prescription creation successful
-			if ($con->query($sql3) === TRUE) {
-				$response["newrx_success"] = 1;
-				$response["newrx_message"] = "Prescription created successfully.";
-				echo json_encode($response);
-			// Prescription not created	
-			} else {
-				$response["newrx_success"] = 0;
-				$response["newrx_message"] = "Prescription could not be created.";
-				echo json_encode($response);
-			}
-
-		// Update Unsuccessful
-		} else {
-			$response["update_success"] = 0;
-			$response["update_message"] = "Total not fetched.";
-			echo json_encode($response);
-		}
-	} else {
-		// Old total was not fetched.
-		echo "Script stopped, could not fetch old total.";
-	}
 	
 	
 
