@@ -1,49 +1,56 @@
 <?php
-// $drugid = $_GET['drugid'];
-// $drugid = '000007';
 
-// $drugname = $_GET['drugname'];
- $drugname = 'Oxy';
+  //$drugid = $_GET['drugid'];
+  $drugid = (isset($_GET['drugid']) ? $_GET['drugid'] : null);
+  // $drugid = '000007';
 
-// $shipdate = $_GET['shipdate'];
- $shipdate = '2016-01-01';
+  //$drugname = $_GET['drugname'];
+  $drugname = (isset($_GET['drugname']) ? $_GET['drugname'] : null);
+  //$drugname = 'Oxy';
 
-// $by_drug is set according to the presence of a drug modifier
-// 0 = search only by date (no drug modifier)
-// 1 = search by ID
-// 2 = search by Name
+  //$shipdate = $_GET['shipdate'];
+  $shipdate = (isset($_GET['shipdate']) ? $_GET['shipdate'] : null);
 
-if (empty($drugid) && empty($drugname)) {
-  $by_drug = 0;
-} elseif (isset ($drugid)) {
-  $by_drug = 1;
-} else {
-  $by_drug = 2;
-}
+  //$shipdate = '2016-01-01';
 
-$reponse = array();
+  $reponse = array();
 
-// connect to db
-require_once('db_config.php');
-
-/* --- Date AND Drug --- */
-if (isset ($shipdate) && $by_drug !== 0) {
-  
-  if ($by_drug == 1) {
-    $sql = "SELECT * FROM shipment WHERE shipdate='$shipdate' and drugid='$drugid'";
-  } else {
-    $sql = "SELECT * FROM shipment WHERE shipdate='$shipdate' and drugname='$drugname'";
+  if (empty ($drugid)) { 
+    $drugid = '%';
   }
+
+  if (empty ($drugname)) {
+    $drugname = '%';
+  } 
+
+  // connect to db
+  require_once('db_config.php');
+
+  if (empty($shipdate)) {
+    
+    $low = '1000-01-01';
+    $high = '9999-01-01';
+  } else {
+   
+    $low = $shipdate;
+    $high = $shipdate;
+  }
+
+  $sql = "SELECT * FROM shipment
+          WHERE drugid LIKE '$drugid'
+            AND drugname LIKE '$drugname'
+            AND shipdate >= '$low'
+            AND shipdate <= '$high'";
 
   $result = $con->query($sql);
   
   // Fetch successful
   if ($result->num_rows > 0) {
   
-    $row = $result->fetch_assoc();
     $response["success"] = 1;
-    $response["shipment"] = array();
-    array_push($response["shipment"], $row);
+    while ($row = $result->fetch_assoc()) {
+      $response["shipment"][] = $row;
+    }
     echo json_encode($response);
 
   // Fetch unsuccessful
@@ -54,37 +61,7 @@ if (isset ($shipdate) && $by_drug !== 0) {
     echo json_encode($response);
 
   }
+
   $con->close();
 
-
-/* --- Date OR Drug --- */
-} else {
-
-  if ($by_drug == 1) {
-    $sql = "SELECT * FROM shipment WHERE drugid='$drugid'";
-  } elseif ($by_drug == 2) {
-    $sql = "SELECT * FROM shipment WHERE drugname='$drugname'";
-  } else {
-    $sql = "SELECT * FROM shipment WHERE shipdate='$shipdate'";
-  }
-
-  $result = $con->query($sql);
-
-  // Fetch Successful
-  if ($result->num_rows > 0) {
-    $response["success"] = 1;
-    while ($row = $result->fetch_assoc()) {
-        $response["shipment"][] = $row;
-    }
-    echo json_encode($response);
-
-  // Fetch unsuccessful
-  } else {
-    $response["success"] = 0;
-    $repsonse["message"] = "An error occurred during shipment fetch.";
-    echo json_encode($response);
-  }
-  $con->close();
-
-}
 ?>

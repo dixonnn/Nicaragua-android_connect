@@ -1,21 +1,29 @@
 <?php
-// $drugid = $_GET['drugid'];
- $drugid = '000002';
-
-// $drugname = $_GET['drugname'];
-// $drugname = 'Oxy';
+$drugid = $_GET['drugid'];
+$drugname = $_GET['drugname'];
 
 $reponse = array();
 
 // connect to db
 require_once('db_config.php');
 
-if(isset ($drugid)){ // by id
-  $sql = "SELECT * FROM druginfo WHERE drugid = '$drugid'";
+
+if(isset ($drugid)) { 
+
+} else {
+
+$drugid='%';
 }
-else { // by name
-  $sql = "SELECT * FROM druginfo WHERE drugname = '$drugname'";
+
+if(isset ($drugname)) {
+
+} else {
+
+$drugname='%';
 }
+
+$sql = "SELECT * FROM druginfo WHERE drugid LIKE '$drugid' and drugname LIKE '$drugname'";
+
 
 $result = $con->query($sql);
 

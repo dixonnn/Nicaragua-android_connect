@@ -3,11 +3,11 @@
 if($_SERVER['REQUEST_METHOD']=='POST') {
 
 	//$rxid = $_POST['rxid'];
-	$rxid = '7';
+	$rxid = '20';
 	//$drugid = $_POST['drugid'];
-	$drugid = '000001';
+	$drugid = '000002';
 	//$transdate = $_POST['transdate'];
-	$transdate = '2016-04-05';
+	$transdate = '2016-12-03';
 	//$quantity = $_POST['quantity'];
 	$quantity = '15';
 	//$patid = $_POST['patid'];

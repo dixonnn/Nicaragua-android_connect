@@ -1,7 +1,7 @@
 <?php
 
 // $patid = $_GET['patid'];
-$patid = '113649';
+$patid = 'patid0';
 
 $response = array();
 

@@ -1,14 +1,23 @@
 <?php
 
-// $patid = $_GET['patid'];
-$patid = '113649';
+
+$patid = $_GET['patid'];
+//$patid = 'patid1';
+
+
+if(isset ($patid)) { 
+
+} else {
+
+$patid='%';
+}
 
 $response = array();
 
 //Importing database
 require_once('db_config.php');
 
-$sql = "SELECT * FROM patientinfo WHERE patid = '$patid'";
+$sql = "SELECT * FROM patientinfo WHERE patid LIKE '$patid'";
 
 //getting result
 $result = $con->query($sql);
