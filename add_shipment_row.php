@@ -2,13 +2,13 @@
 
 if($_SERVER['REQUEST_METHOD']=='POST') {
 	
-	$drugid = $_POST['drugid'];
+	$drugid = (isset($_POST['drugid']) ? $_POST['drugid'] : null);
 	//$drugid = '555545';
-	$drugname = $_POST['drugname'];
+	$drugname = (isset($_POST['drugname']) ? $_POST['drugname'] : null);
 	//$drugname = 'REAL drugs';
   	//$shipdate = $_POST['shipdate'];
   	$shipdate = '2016-12-01';
-	$drugincr = $_POST['drugincr'];
+	$drugincr = (isset($_POST['drugincr']) ? $_POST['drugincr'] : null);
 	//$drugincr = '500';
 
 	$reponse = array();
